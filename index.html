@@ -43,15 +43,11 @@
             display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; width: 100%;
         }
 
-        .filter-buttons {
-            display: flex; gap: 10px; flex-wrap: wrap;
-        }
-
+        .filter-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
         .filter-btn {
             background-color: transparent; border: 1px solid var(--border-color);
             color: #94a3b8; padding: 8px 15px; border-radius: 20px; cursor: pointer; transition: 0.3s;
         }
-        
         .filter-btn:hover { border-color: var(--accent-color); color: white; }
         .filter-btn.active { background-color: var(--accent-color); color: white; border-color: var(--accent-color); }
 
@@ -62,16 +58,12 @@
         .search-bar:focus { outline: 1px solid var(--accent-color); }
         
         .add-btn {
-            background-color: var(--accent-color); color: white;
-            border: none; padding: 10px 20px; border-radius: 6px;
-            font-weight: bold; cursor: pointer; transition: 0.3s;
+            background-color: var(--accent-color); color: white; border: none; padding: 10px 20px; 
+            border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.3s;
         }
         .add-btn:hover { background-color: var(--accent-hover); transform: scale(1.05); }
 
-        .movie-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 30px;
-        }
-
+        .movie-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 30px; }
         .movie-card {
             background-color: var(--card-bg); border-radius: 10px; overflow: hidden;
             transition: transform 0.3s ease, border-color 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.3); cursor: pointer;
@@ -79,7 +71,6 @@
         }
         .movie-card:hover { transform: translateY(-10px) scale(1.02); border-color: var(--accent-color); }
 
-        /* Badge trạng thái */
         .status-badge {
             position: absolute; top: 10px; left: 10px; z-index: 10;
             background: rgba(15, 23, 42, 0.85); padding: 5px 10px; border-radius: 20px;
@@ -107,38 +98,48 @@
             background-color: rgba(0,0,0,0.85); z-index: 1000; justify-content: center; align-items: center;
             backdrop-filter: blur(5px);
         }
+        
         .modal-content {
-            background-color: var(--card-bg); width: 90%; max-width: 900px;
+            background-color: var(--card-bg); width: 90%; max-width: 1000px;
             border-radius: 12px; display: flex; overflow: hidden; position: relative;
             border: 1px solid var(--border-color); max-height: 90vh; overflow-y: auto;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Tùy chỉnh riêng cho Modal Chi tiết Phim (Kiểu Điện Ảnh) */
+        .detail-content {
+            background-color: #0b0f19;
+            background-size: cover;
+            background-position: center top;
+            background-repeat: no-repeat;
+            transition: background-image 0.5s ease-in-out;
         }
         
-        .form-content { flex-direction: column; padding: 30px; max-width: 500px; }
-        .form-content h2 { margin-top: 0; color: white; text-align: center; }
+        .detail-overlay {
+            display: flex; width: 100%;
+            background: linear-gradient(to right, rgba(11, 15, 25, 1) 25%, rgba(11, 15, 25, 0.85) 50%, rgba(11, 15, 25, 0.3) 100%);
+            padding: 40px; box-sizing: border-box;
+        }
+
+        .modal-poster { 
+            width: 300px; border-radius: 8px; object-fit: cover; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5); z-index: 2; border: 1px solid rgba(255,255,255,0.1);
+        }
         
-        .search-tmdb-box { display: flex; gap: 10px; margin-bottom: 15px; }
-        .search-tmdb-box input { flex: 1; padding: 10px; background: #0f172a; border: 1px solid var(--border-color); color: white; border-radius: 6px; }
-        .search-tmdb-box button { padding: 10px 15px; background: var(--accent-color); color: white; border: none; border-radius: 6px; cursor: pointer; }
-        .search-tmdb-box button:hover { background: var(--accent-hover); }
-        
-        #tmdbResults { max-height: 250px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
-        .tmdb-item { display: flex; align-items: center; gap: 10px; background: #0f172a; padding: 8px; border-radius: 6px; cursor: pointer; transition: 0.2s; border: 1px solid var(--border-color); }
-        .tmdb-item:hover { border-color: var(--accent-color); background: #1e293b; }
-        .tmdb-item img { width: 40px; height: 60px; object-fit: cover; border-radius: 4px; }
+        .modal-details { 
+            padding-left: 40px; flex: 1; display: flex; flex-direction: column; z-index: 2; 
+        }
+        .modal-details h2 { margin-top: 0; color: white; font-size: 2.5em; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); line-height: 1.2; }
+        .modal-desc { margin-top: 15px; line-height: 1.8; color: #cbd5e1; font-size: 1.05em; margin-bottom: 20px; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); }
 
-        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 30px; color: #94a3b8; cursor: pointer; z-index: 10; }
-        .close-btn:hover { color: white; }
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 30px; color: white; cursor: pointer; z-index: 10; text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
+        .close-btn:hover { color: var(--accent-color); }
 
-        .modal-poster { width: 40%; object-fit: cover; }
-        .modal-details { padding: 30px; width: 60%; display: flex; flex-direction: column; }
-        .modal-details h2 { margin-top: 0; color: var(--accent-color); font-size: 2em; }
-        .modal-desc { margin-top: 15px; line-height: 1.8; color: #cbd5e1; font-size: 0.95em; margin-bottom: 20px; }
-
-        /* Vùng chọn Trạng thái */
         .status-selector { margin-top: 10px; display: flex; align-items: center; gap: 10px; }
         .status-selector select { 
-            padding: 8px 15px; background: #0f172a; color: white; 
+            padding: 8px 15px; background: rgba(15, 23, 42, 0.8); color: white; 
             border: 1px solid var(--border-color); border-radius: 6px; cursor: pointer; font-size: 1em;
+            backdrop-filter: blur(5px);
         }
         .status-selector select:focus { outline: none; border-color: var(--accent-color); }
 
@@ -146,15 +147,28 @@
             background-color: #e50914; color: white; border: none; padding: 10px 20px; border-radius: 6px;
             font-weight: bold; cursor: pointer; transition: 0.3s;
             display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: fit-content; margin-top: 15px;
+            box-shadow: 0 4px 10px rgba(229, 9, 20, 0.4);
         }
         .trailer-btn:hover { background-color: #b20710; transform: scale(1.05); }
-        .trailer-btn:disabled { background-color: #555; cursor: not-allowed; transform: none; }
-        .trailer-container { margin-top: 20px; width: 100%; border-radius: 8px; overflow: hidden; }
+        .trailer-btn:disabled { background-color: #555; cursor: not-allowed; transform: none; box-shadow: none; }
+        .trailer-container { margin-top: 20px; width: 100%; border-radius: 8px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+
+        /* Style cho Modal Tìm Kiếm (Giữ nguyên gọn gàng) */
+        .form-content { flex-direction: column; padding: 30px; max-width: 500px; background-color: var(--card-bg); }
+        .form-content h2 { margin-top: 0; color: white; text-align: center; }
+        .search-tmdb-box { display: flex; gap: 10px; margin-bottom: 15px; }
+        .search-tmdb-box input { flex: 1; padding: 10px; background: #0f172a; border: 1px solid var(--border-color); color: white; border-radius: 6px; }
+        .search-tmdb-box button { padding: 10px 15px; background: var(--accent-color); color: white; border: none; border-radius: 6px; cursor: pointer; }
+        .search-tmdb-box button:hover { background: var(--accent-hover); }
+        #tmdbResults { max-height: 250px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+        .tmdb-item { display: flex; align-items: center; gap: 10px; background: #0f172a; padding: 8px; border-radius: 6px; cursor: pointer; transition: 0.2s; border: 1px solid var(--border-color); }
+        .tmdb-item:hover { border-color: var(--accent-color); background: #1e293b; }
+        .tmdb-item img { width: 40px; height: 60px; object-fit: cover; border-radius: 4px; }
 
         @media (max-width: 768px) {
-            .modal-content { flex-direction: column; }
-            .modal-poster { width: 100%; height: 300px; }
-            .modal-details { width: 100%; box-sizing: border-box; }
+            .detail-overlay { flex-direction: column; padding: 20px; background: rgba(11, 15, 25, 0.9); }
+            .modal-poster { width: 100%; height: auto; max-height: 400px; }
+            .modal-details { padding-left: 0; padding-top: 20px; width: 100%; box-sizing: border-box; }
             .controls-top { flex-direction: column; align-items: stretch; }
             .search-bar { width: 100%; box-sizing: border-box; }
         }
@@ -173,7 +187,6 @@
                 <input type="text" class="search-bar" placeholder="Tìm kiếm trong tủ...">
                 <button id="openFormBtn" class="add-btn">+ Thêm Phim Từ TMDB</button>
             </div>
-            <!-- Bộ lọc trạng thái -->
             <div class="filter-buttons">
                 <button class="filter-btn active" data-filter="all">Tất cả</button>
                 <button class="filter-btn" data-filter="favorite">❤️ Yêu thích</button>
@@ -181,32 +194,32 @@
                 <button class="filter-btn" data-filter="plan_to_watch">🕒 Muốn xem</button>
             </div>
         </div>
-
         <div class="movie-grid" id="movieGrid"></div>
     </div>
 
-    <!-- Cửa sổ xem chi tiết phim -->
+    <!-- Cửa sổ xem chi tiết phim (Giao diện điện ảnh) -->
     <div id="movieModal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content detail-content" id="detailModalContent">
             <span class="close-btn" id="closeDetailBtn">&times;</span>
-            <img id="modalImg" class="modal-poster" src="" alt="Poster">
-            <div class="modal-details">
-                <h2 id="modalTitle">Tên Phim</h2>
-                <div id="modalMeta" class="movie-meta" style="justify-content: flex-start; gap: 20px;"></div>
-                
-                <!-- Khu vực chọn trạng thái -->
-                <div class="status-selector">
-                    <label style="color: #94a3b8;">Phân loại:</label>
-                    <select id="modalStatus">
-                        <option value="favorite">❤️ Yêu thích</option>
-                        <option value="watched">👀 Đã xem</option>
-                        <option value="plan_to_watch">🕒 Muốn xem</option>
-                    </select>
-                </div>
+            <div class="detail-overlay">
+                <img id="modalImg" class="modal-poster" src="" alt="Poster">
+                <div class="modal-details">
+                    <h2 id="modalTitle">Tên Phim</h2>
+                    <div id="modalMeta" class="movie-meta" style="justify-content: flex-start; gap: 20px; margin-bottom: 15px; font-size: 1.1em;"></div>
+                    
+                    <div class="status-selector">
+                        <label style="color: #cbd5e1; text-shadow: 1px 1px 2px black;">Phân loại:</label>
+                        <select id="modalStatus">
+                            <option value="favorite">❤️ Yêu thích</option>
+                            <option value="watched">👀 Đã xem</option>
+                            <option value="plan_to_watch">🕒 Muốn xem</option>
+                        </select>
+                    </div>
 
-                <p id="modalDesc" class="modal-desc">Nội dung chi tiết...</p>
-                <button id="playTrailerBtn" class="trailer-btn">▶ Xem Trailer</button>
-                <div id="trailerContainer" class="trailer-container"></div>
+                    <p id="modalDesc" class="modal-desc">Nội dung chi tiết...</p>
+                    <button id="playTrailerBtn" class="trailer-btn">▶ Xem Trailer</button>
+                    <div id="trailerContainer" class="trailer-container"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -214,7 +227,7 @@
     <!-- Cửa sổ tìm kiếm TMDB -->
     <div id="addMovieModal" class="modal">
         <div class="modal-content form-content">
-            <span class="close-btn" id="closeFormBtn">&times;</span>
+            <span class="close-btn" id="closeFormBtn" style="color: #94a3b8;">&times;</span>
             <h2>Tìm Phim Từ TMDB</h2>
             <div class="search-tmdb-box">
                 <input type="text" id="tmdbSearchInput" placeholder="Nhập tên phim (VD: Avengers)...">
@@ -229,7 +242,6 @@
     <script>
         const TMDB_API_KEY = "474d7f0a0f0765ce60c19a33e23e1fe8"; 
 
-        // Map trạng thái để hiển thị
         const statusMap = {
             'favorite': '❤️ Yêu thích',
             'watched': '👀 Đã xem',
@@ -237,8 +249,8 @@
         };
 
         const defaultMovies = [
-            { id: 157335, title: "Interstellar", year: "2014", rating: "8.6", img: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg", desc: "Một nhóm nhà thám hiểm vũ trụ đi qua một hố đen...", status: "favorite" },
-            { id: 155, title: "The Dark Knight", year: "2008", rating: "9.0", img: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg", desc: "Batman đối mặt với thử thách lớn nhất từ Joker.", status: "watched" }
+            { id: 157335, title: "Interstellar", year: "2014", rating: "8.6", img: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg", desc: "Một nhóm nhà thám hiểm vũ trụ đi qua một hố đen nhằm tìm kiếm một hành tinh có thể sinh sống được cho nhân loại.", status: "favorite", backdrop: "https://image.tmdb.org/t/p/w1280/xJHokMbljvjEVAZS3xZZIqSWEgD.jpg" },
+            { id: 155, title: "The Dark Knight", year: "2008", rating: "9.0", img: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg", desc: "Batman đối mặt với thử thách lớn nhất về thể chất lẫn tinh thần từ trước đến nay để chống lại kẻ thù điên loạn Joker.", status: "watched", backdrop: "https://image.tmdb.org/t/p/w1280/nMKdUUepR0i5zn0y1T4CsSB5chy.jpg" }
         ];
 
         let myMovies = JSON.parse(localStorage.getItem('myTmdbLibraryBlue'));
@@ -247,24 +259,23 @@
             localStorage.setItem('myTmdbLibraryBlue', JSON.stringify(myMovies));
         }
 
-        let currentOpenMovieIndex = null; // Biến lưu vị trí phim đang mở
-
+        let currentOpenMovieIndex = null;
         const movieGrid = document.getElementById('movieGrid');
+        const detailModalContent = document.getElementById('detailModalContent');
 
         function renderMovies() {
             movieGrid.innerHTML = '';
             myMovies.forEach((movie, index) => {
-                // Nếu phim chưa có trạng thái (dữ liệu cũ), gán mặc định
                 if(!movie.status) movie.status = 'plan_to_watch'; 
 
                 const card = document.createElement('div');
                 card.className = 'movie-card';
-                card.dataset.status = movie.status; // Phục vụ cho tính năng Lọc
+                card.dataset.status = movie.status;
                 
                 card.innerHTML = `
                     <div class="status-badge">${statusMap[movie.status]}</div>
                     <button class="delete-btn" title="Xóa phim">&times;</button>
-                    <img src="${movie.img}" class="movie-poster" alt="${movie.title}">
+                    <img src="${movie.img}" class="movie-poster" style="width: 100%; border-radius: 0; box-shadow: none;" alt="${movie.title}">
                     <div class="movie-info">
                         <h3 class="movie-title">${movie.title}</h3>
                         <div class="movie-meta"><span>${movie.year}</span><span class="movie-rating">★ ${movie.rating}</span></div>
@@ -280,15 +291,34 @@
                     }
                 });
 
-                card.addEventListener('click', () => {
-                    currentOpenMovieIndex = index; // Ghi nhớ phim nào đang được mở
+                card.addEventListener('click', async () => {
+                    currentOpenMovieIndex = index;
                     
                     document.getElementById('modalTitle').textContent = movie.title;
                     document.getElementById('modalImg').src = movie.img;
-                    document.getElementById('modalMeta').innerHTML = `<span>${movie.year}</span><span class="movie-rating">★ ${movie.rating}</span>`;
+                    document.getElementById('modalMeta').innerHTML = `<span>Năm phát hành: <b>${movie.year}</b></span> <span style="color: #f5c518;">Điểm TMDB: <b>★ ${movie.rating}</b></span>`;
                     document.getElementById('modalDesc').textContent = movie.desc;
-                    document.getElementById('modalStatus').value = movie.status; // Cập nhật đúng giá trị selector
+                    document.getElementById('modalStatus').value = movie.status; 
                     
+                    // Xử lý ảnh nền Backdrop
+                    detailModalContent.style.backgroundImage = 'none'; // Xóa ảnh nền cũ tránh bị chớp
+                    if (movie.backdrop) {
+                        detailModalContent.style.backgroundImage = `url('${movie.backdrop}')`;
+                    } else {
+                        // Nếu phim cũ chưa có ảnh nền, gọi API để lấy và lưu lại tự động
+                        try {
+                            const res = await fetch(`https://api.themoviedb.org/3/movie/${movie.id}?api_key=${TMDB_API_KEY}&language=vi-VN`);
+                            const data = await res.json();
+                            if(data.backdrop_path) {
+                                movie.backdrop = `https://image.tmdb.org/t/p/w1280${data.backdrop_path}`;
+                                localStorage.setItem('myTmdbLibraryBlue', JSON.stringify(myMovies));
+                                detailModalContent.style.backgroundImage = `url('${movie.backdrop}')`;
+                            }
+                        } catch(e) {
+                            console.log("Không tải được backdrop cho phim cũ.");
+                        }
+                    }
+
                     const trailerBtn = document.getElementById('playTrailerBtn');
                     const trailerContainer = document.getElementById('trailerContainer');
                     trailerContainer.innerHTML = ''; 
@@ -328,19 +358,17 @@
 
                 movieGrid.appendChild(card);
             });
-            applyFilters(); // Đảm bảo bộ lọc được giữ nguyên sau khi vẽ lại
+            applyFilters(); 
         }
 
-        // Lắng nghe thay đổi trạng thái khi chọn trong Modal
         document.getElementById('modalStatus').addEventListener('change', (e) => {
             if(currentOpenMovieIndex !== null) {
                 myMovies[currentOpenMovieIndex].status = e.target.value;
                 localStorage.setItem('myTmdbLibraryBlue', JSON.stringify(myMovies));
-                renderMovies(); // Vẽ lại để cập nhật Badge bên ngoài
+                renderMovies();
             }
         });
         
-        // HÀM LỌC TỔNG HỢP (Kết hợp cả Tìm kiếm và Nút bấm trạng thái)
         function applyFilters() {
             const searchTerm = document.querySelector('.search-bar').value.toLowerCase().trim();
             const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
@@ -349,10 +377,7 @@
                 const title = card.querySelector('.movie-title').textContent.toLowerCase();
                 const status = card.dataset.status;
 
-                const matchesSearch = title.includes(searchTerm);
-                const matchesFilter = (activeFilter === 'all' || status === activeFilter);
-
-                if (matchesSearch && matchesFilter) {
+                if (title.includes(searchTerm) && (activeFilter === 'all' || status === activeFilter)) {
                     card.style.display = 'block';
                 } else {
                     card.style.display = 'none';
@@ -360,10 +385,7 @@
             });
         }
 
-        // Kích hoạt tìm kiếm gõ phím
         document.querySelector('.search-bar').addEventListener('input', applyFilters);
-
-        // Kích hoạt nút bấm bộ lọc
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -374,9 +396,7 @@
 
         renderMovies();
 
-        function stopTrailer() {
-            document.getElementById('trailerContainer').innerHTML = ''; 
-        }
+        function stopTrailer() { document.getElementById('trailerContainer').innerHTML = ''; }
 
         const addMovieModal = document.getElementById('addMovieModal');
         document.getElementById('openFormBtn').onclick = () => addMovieModal.style.display = 'flex';
@@ -416,6 +436,7 @@
                     tmdbResults.innerHTML = '';
                     data.results.forEach(movie => {
                         const posterUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/40x60?text=No+Image';
+                        const backdropUrl = movie.backdrop_path ? `https://image.tmdb.org/t/p/w1280${movie.backdrop_path}` : '';
                         const year = movie.release_date ? movie.release_date.split('-')[0] : 'N/A';
                         
                         const item = document.createElement('div');
@@ -429,8 +450,7 @@
                         `;
 
                         item.onclick = () => {
-                            const isExist = myMovies.some(m => m.id === movie.id);
-                            if (isExist) {
+                            if (myMovies.some(m => m.id === movie.id)) {
                                 alert(`Phim "${movie.title}" đã có trong tủ của bạn rồi!`);
                                 return;
                             }
@@ -441,8 +461,9 @@
                                 year: year,
                                 rating: movie.vote_average ? movie.vote_average.toFixed(1) : '0.0',
                                 img: posterUrl,
+                                backdrop: backdropUrl, // Lưu kèm ảnh nền khổ lớn
                                 desc: movie.overview || 'Không có mô tả nội dung cho phim này.',
-                                status: 'plan_to_watch' // Trạng thái mặc định khi mới thêm
+                                status: 'plan_to_watch'
                             };
 
                             myMovies.unshift(newEntry);
@@ -453,7 +474,6 @@
                             tmdbSearchInput.value = '';
                             tmdbResults.innerHTML = '<p style="color: #94a3b8; text-align: center; font-size: 0.9em;">Gõ tên phim và bấm Tìm để chọn phim chính thống.</p>';
                         };
-
                         tmdbResults.appendChild(item);
                     });
                 } else {
