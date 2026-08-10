@@ -215,7 +215,7 @@
                 <button>Hành động</button>
                 <button>Viễn tưởng</button>
                 <button>Tâm lý</button>
-                <button>Đã xem</button>
+                <button>Nhạc kịch</button>
             </div>
         </div>
 
@@ -231,7 +231,6 @@
                     </div>
                     <div class="movie-genres">
                         <span class="genre-tag">Viễn tưởng</span>
-                        <span class="genre-tag">Phiêu lưu</span>
                     </div>
                 </div>
             </div>
@@ -247,7 +246,6 @@
                     </div>
                     <div class="movie-genres">
                         <span class="genre-tag">Hành động</span>
-                        <span class="genre-tag">Tội phạm</span>
                     </div>
                 </div>
             </div>
@@ -279,7 +277,6 @@
                     </div>
                     <div class="movie-genres">
                         <span class="genre-tag">Nhạc kịch</span>
-                        <span class="genre-tag">Tình cảm</span>
                     </div>
                 </div>
             </div>
@@ -295,7 +292,6 @@
                     </div>
                     <div class="movie-genres">
                         <span class="genre-tag">Hành động</span>
-                        <span class="genre-tag">Hậu tận thế</span>
                     </div>
                 </div>
             </div>
@@ -311,7 +307,6 @@
                     </div>
                     <div class="movie-genres">
                         <span class="genre-tag">Tâm lý</span>
-                        <span class="genre-tag">Lãng mạn</span>
                     </div>
                 </div>
             </div>
@@ -322,5 +317,45 @@
         <p>&copy; Tủ Phim Của Tôi. Được tạo với ❤️ để lưu trữ đam mê.</p>
     </footer>
 
+    <!-- Đoạn JavaScript giúp Tìm kiếm & Lọc thể loại hoạt động -->
+    <script>
+        const searchInput = document.querySelector('.search-bar');
+        const filterButtons = document.querySelectorAll('.filter-buttons button');
+        const movieCards = document.querySelectorAll('.movie-card');
+
+        // Chức năng 1: Tìm kiếm theo tên phim khi gõ phím
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            
+            movieCards.forEach(card => {
+                const title = card.querySelector('.movie-title').textContent.toLowerCase();
+                if (title.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // Chức năng 2: Lọc danh sách khi bấm vào các nút thể loại
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                const selectedCategory = button.textContent.trim();
+
+                movieCards.forEach(card => {
+                    const genres = Array.from(card.querySelectorAll('.genre-tag')).map(tag => tag.textContent.trim());
+                    
+                    if (selectedCategory === 'Tất cả' || genres.includes(selectedCategory)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
