@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tủ Phim Của Tôi</title>
+    <style>
+        :root {
+            --bg-color: #141414;
+            --text-color: #ffffff;
+            --accent-color: #e50914; /* Red */
+            --card-bg: #2f2f2f;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px 50px;
+            text-align: center;
+            border-bottom: 2px solid var(--accent-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        header p {
+            margin: 5px 0 0;
+            color: #aaa;
+            font-size: 1.1em;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .movie-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 30px;
+        }
+
+        .movie-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            cursor: pointer;
+        }
+
+        .movie-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.6);
+            border: 1px solid var(--accent-color);
+        }
+
+        .movie-poster {
+            width: 100%;
+            height: 300px;
+            background-color: #444;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            color: #666;
+            background-image: linear-gradient(45deg, #222, #444);
+            position: relative;
+        }
+
+        .poster-1 { background: linear-gradient(135deg, #1f4037, #99f2c8); }
+        .poster-2 { background: linear-gradient(135deg, #232526, #414345); }
+        .poster-3 { background: linear-gradient(135deg, #8E2DE2, #4A00E0); }
+        .poster-4 { background: linear-gradient(135deg, #FF416C, #FF4B2B); }
+        .poster-5 { background: linear-gradient(135deg, #f12711, #f5af19); }
+        .poster-6 { background: linear-gradient(135deg, #00B4DB, #0083B0); }
+
+        .movie-info {
+            padding: 15px;
+        }
+
+        .movie-title {
+            margin: 0 0 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .movie-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #aaa;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .movie-rating {
+            color: #f5c518;
+            font-weight: bold;
+        }
+
+        .movie-genres {
+            font-size: 0.8em;
+            color: #bbb;
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .genre-tag {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            margin-top: 50px;
+            border-top: 1px solid #333;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background-color: var(--card-bg);
+            padding: 15px 20px;
+            border-radius: 8px;
+        }
+        
+        .search-bar {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            background-color: #444;
+            color: white;
+            width: 300px;
+            font-size: 1em;
+        }
+        
+        .search-bar:focus {
+            outline: 1px solid var(--accent-color);
+        }
+
+        .filter-buttons button {
+            background: none;
+            border: 1px solid #666;
+            color: white;
+            padding: 8px 15px;
+            margin-left: 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-buttons button:hover, .filter-buttons button.active {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .search-bar {
+                width: 100%;
+                box-sizing: border-box;
+            }
+            .filter-buttons {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                justify-content: center;
+            }
+            .filter-buttons button {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🎬 Tủ Phim Của Tôi</h1>
+        <p>Kho lưu trữ những tác phẩm điện ảnh yêu thích</p>
+    </header>
+
+    <div class="container">
+        <div class="controls">
+            <input type="text" class="search-bar" placeholder="Tìm kiếm phim...">
+            <div class="filter-buttons">
+                <button class="active">Tất cả</button>
+                <button>Hành động</button>
+                <button>Viễn tưởng</button>
+                <button>Tâm lý</button>
+                <button>Đã xem</button>
+            </div>
+        </div>
+
+        <div class="movie-grid">
+            <!-- Phim 1 -->
+            <div class="movie-card">
+                <div class="movie-poster poster-1">🌌</div>
+                <div class="movie-info">
+                    <h3 class="movie-title">Interstellar</h3>
+                    <div class="movie-meta">
+                        <span>2014</span>
+                        <span class="movie-rating">★ 8.6</span>
+                    </div>
+                    <div class="movie-genres">
+                        <span class="genre-tag">Viễn tưởng</span>
+                        <span class="genre-tag">Phiêu lưu</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phim 2 -->
+            <div class="movie-card">
+                <div class="movie-poster poster-2">🦇</div>
+                <div class="movie-info">
+                    <h3 class="movie-title">The Dark Knight</h3>
+                    <div class="movie-meta">
+                        <span>2008</span>
+                        <span class="movie-rating">★ 9.0</span>
+                    </div>
+                    <div class="movie-genres">
+                        <span class="genre-tag">Hành động</span>
+                        <span class="genre-tag">Tội phạm</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phim 3 -->
+            <div class="movie-card">
+                <div class="movie-poster poster-3">🧠</div>
+                <div class="movie-info">
+                    <h3 class="movie-title">Inception</h3>
+                    <div class="movie-meta">
+                        <span>2010</span>
+                        <span class="movie-rating">★ 8.8</span>
+                    </div>
+                    <div class="movie-genres">
+                        <span class="genre-tag">Hành động</span>
+                        <span class="genre-tag">Viễn tưởng</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phim 4 -->
+            <div class="movie-card">
+                <div class="movie-poster poster-4">💖</div>
+                <div class="movie-info">
+                    <h3 class="movie-title">La La Land</h3>
+                    <div class="movie-meta">
+                        <span>2016</span>
+                        <span class="movie-rating">★ 8.0</span>
+                    </div>
+                    <div class="movie-genres">
+                        <span class="genre-tag">Nhạc kịch</span>
+                        <span class="genre-tag">Tình cảm</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Phim 5 -->
+            <div class="movie-card">
+                <div class="movie-poster poster-5">🔥</div>
+                <div class="movie-info">
+                    <h3 class="movie-title">Mad Max: Fury Road</h3>
+                    <div class="movie-meta">
+                        <span>2015</span>
+                        <span class="movie-rating">★ 8.1</span>
+                    </div>
+                    <div class="movie-genres">
+                        <span class="genre-tag">Hành động</span>
+                        <span class="genre-tag">Hậu tận thế</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phim 6 -->
+            <div class="movie-card">
+                <div class="movie-poster poster-6">🧊</div>
+                <div class="movie-info">
+                    <h3 class="movie-title">Titanic</h3>
+                    <div class="movie-meta">
+                        <span>1997</span>
+                        <span class="movie-rating">★ 7.9</span>
+                    </div>
+                    <div class="movie-genres">
+                        <span class="genre-tag">Tâm lý</span>
+                        <span class="genre-tag">Lãng mạn</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; Tủ Phim Của Tôi. Được tạo với ❤️ để lưu trữ đam mê.</p>
+    </footer>
+
+</body>
+</html>
