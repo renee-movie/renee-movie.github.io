@@ -6,10 +6,12 @@
     <title>Tủ Phim Của Tôi</title>
     <style>
         :root {
-            --bg-color: #141414;
+            --bg-color: #0b0f19;       /* Nền xanh đen đậm chủ đạo */
             --text-color: #ffffff;
-            --accent-color: #e50914;
-            --card-bg: #2f2f2f;
+            --accent-color: #3b82f6;   /* Xanh dương nổi bật */
+            --accent-hover: #2563eb;   /* Xanh dương đậm khi hover */
+            --card-bg: #1e293b;        /* Nền thẻ phim (Xanh slate tối) */
+            --border-color: #334155;
         }
 
         body {
@@ -20,96 +22,95 @@
         }
 
         header {
-            background-color: rgba(0, 0, 0, 0.8); padding: 20px 50px;
+            background-color: rgba(11, 15, 25, 0.9); padding: 20px 50px;
             text-align: center; border-bottom: 2px solid var(--accent-color);
             position: sticky; top: 0; z-index: 100;
+            backdrop-filter: blur(10px);
         }
 
-        header h1 { margin: 0; font-size: 2.5em; text-transform: uppercase; }
-        header p { margin: 5px 0 0; color: #aaa; font-size: 1.1em; }
+        header h1 { margin: 0; font-size: 2.5em; text-transform: uppercase; letter-spacing: 1px; }
+        header p { margin: 5px 0 0; color: #94a3b8; font-size: 1.1em; }
 
         .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
 
-        /* Khung công cụ chứa thanh tìm kiếm và nút Thêm phim */
         .controls {
             display: flex; justify-content: space-between; align-items: center;
             margin-bottom: 30px; background-color: var(--card-bg);
             padding: 15px 20px; border-radius: 8px; flex-wrap: wrap; gap: 15px;
+            border: 1px solid var(--border-color);
         }
         
         .search-bar {
-            padding: 10px 15px; border: none; border-radius: 4px;
-            background-color: #444; color: white; width: 250px; font-size: 1em;
+            padding: 10px 15px; border: 1px solid var(--border-color); border-radius: 6px;
+            background-color: #0f172a; color: white; width: 250px; font-size: 1em;
         }
+        .search-bar:focus { outline: 1px solid var(--accent-color); }
         
-        .filter-buttons button {
-            background: none; border: 1px solid #666; color: white;
-            padding: 8px 15px; margin-left: 5px; border-radius: 20px; cursor: pointer;
-        }
-        .filter-buttons button:hover, .filter-buttons button.active {
-            background-color: var(--accent-color); border-color: var(--accent-color);
-        }
-
-        /* Nút Thêm Phim nổi bật */
         .add-btn {
             background-color: var(--accent-color); color: white;
-            border: none; padding: 10px 20px; border-radius: 4px;
+            border: none; padding: 10px 20px; border-radius: 6px;
             font-weight: bold; cursor: pointer; transition: 0.3s;
         }
-        .add-btn:hover { background-color: #b20710; transform: scale(1.05); }
+        .add-btn:hover { background-color: var(--accent-hover); transform: scale(1.05); }
 
         .movie-grid {
             display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 30px;
         }
 
         .movie-card {
-            background-color: var(--card-bg); border-radius: 8px; overflow: hidden;
-            transition: transform 0.3s ease; box-shadow: 0 4px 6px rgba(0,0,0,0.3); cursor: pointer;
+            background-color: var(--card-bg); border-radius: 10px; overflow: hidden;
+            transition: transform 0.3s ease, border-color 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.3); cursor: pointer;
+            position: relative; border: 1px solid var(--border-color);
         }
-        .movie-card:hover { transform: translateY(-10px) scale(1.02); border: 1px solid var(--accent-color); }
+        .movie-card:hover { transform: translateY(-10px) scale(1.02); border-color: var(--accent-color); }
 
         .movie-poster { width: 100%; height: 300px; object-fit: cover; display: block; }
         .movie-info { padding: 15px; }
-        .movie-title { margin: 0 0 10px; font-size: 1.2em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .movie-meta { display: flex; justify-content: space-between; color: #aaa; font-size: 0.9em; margin-bottom: 10px; }
+        .movie-title { margin: 0 0 10px; font-size: 1.1em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .movie-meta { display: flex; justify-content: space-between; color: #94a3b8; font-size: 0.9em; margin-bottom: 5px; }
         .movie-rating { color: #f5c518; font-weight: bold; }
-        .movie-genres { font-size: 0.8em; color: #bbb; display: flex; gap: 5px; flex-wrap: wrap; }
-        .genre-tag { background-color: rgba(255, 255, 255, 0.1); padding: 3px 8px; border-radius: 4px; }
 
-        /* Giao diện Modal chung */
+        .delete-btn {
+            position: absolute; top: 10px; right: 10px; background: rgba(15, 23, 42, 0.8);
+            color: #ef4444; border: none; border-radius: 50%; width: 30px; height: 30px;
+            font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            opacity: 0; transition: opacity 0.3s, background 0.3s;
+        }
+        .movie-card:hover .delete-btn { opacity: 1; }
+        .delete-btn:hover { background: #ef4444; color: white; }
+
+        /* Modal chung */
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center;
+            background-color: rgba(0,0,0,0.85); z-index: 1000; justify-content: center; align-items: center;
+            backdrop-filter: blur(5px);
         }
         .modal-content {
             background-color: var(--card-bg); width: 90%; max-width: 800px;
-            border-radius: 10px; display: flex; overflow: hidden; position: relative;
+            border-radius: 12px; display: flex; overflow: hidden; position: relative;
+            border: 1px solid var(--border-color);
         }
         
-        /* Giao diện riêng cho Form Thêm Phim */
-        .form-content { flex-direction: column; padding: 30px; max-width: 500px; overflow-y: auto; max-height: 90vh; }
+        .form-content { flex-direction: column; padding: 30px; max-width: 500px; }
         .form-content h2 { margin-top: 0; color: white; text-align: center; }
-        form { display: flex; flex-direction: column; gap: 15px; }
-        form input, form select, form textarea {
-            padding: 12px; border-radius: 4px; border: 1px solid #555;
-            background-color: #444; color: white; font-family: inherit; font-size: 1em;
-        }
-        form input:focus, form textarea:focus { outline: 1px solid var(--accent-color); }
-        .submit-btn {
-            background-color: var(--accent-color); color: white; border: none;
-            padding: 12px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 1.1em; margin-top: 10px;
-        }
+        
+        .search-tmdb-box { display: flex; gap: 10px; margin-bottom: 15px; }
+        .search-tmdb-box input { flex: 1; padding: 10px; background: #0f172a; border: 1px solid var(--border-color); color: white; border-radius: 6px; }
+        .search-tmdb-box button { padding: 10px 15px; background: var(--accent-color); color: white; border: none; border-radius: 6px; cursor: pointer; }
+        .search-tmdb-box button:hover { background: var(--accent-hover); }
+        
+        #tmdbResults { max-height: 250px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+        .tmdb-item { display: flex; align-items: center; gap: 10px; background: #0f172a; padding: 8px; border-radius: 6px; cursor: pointer; transition: 0.2s; border: 1px solid var(--border-color); }
+        .tmdb-item:hover { border-color: var(--accent-color); background: #1e293b; }
+        .tmdb-item img { width: 40px; height: 60px; object-fit: cover; border-radius: 4px; }
 
-        .close-btn {
-            position: absolute; top: 15px; right: 20px; font-size: 30px;
-            color: #aaa; cursor: pointer; z-index: 10;
-        }
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 30px; color: #94a3b8; cursor: pointer; z-index: 10; }
         .close-btn:hover { color: white; }
 
         .modal-poster { width: 40%; object-fit: cover; }
         .modal-details { padding: 30px; width: 60%; }
         .modal-details h2 { margin-top: 0; color: var(--accent-color); font-size: 2em; }
-        .modal-desc { margin-top: 20px; line-height: 1.8; color: #ddd; }
+        .modal-desc { margin-top: 20px; line-height: 1.8; color: #cbd5e1; font-size: 0.95em; }
 
         @media (max-width: 768px) {
             .modal-content { flex-direction: column; max-height: 90vh; overflow-y: auto; }
@@ -123,24 +124,15 @@
 
     <header>
         <h1>🎬 Tủ Phim Của Tôi</h1>
-        <p>Kho lưu trữ những tác phẩm điện ảnh yêu thích</p>
+        <p>Kho lưu trữ cá nhân phong cách hiện đại</p>
     </header>
 
     <div class="container">
         <div class="controls">
-            <input type="text" class="search-bar" placeholder="Tìm kiếm phim...">
-            <div class="filter-buttons">
-                <button class="active">Tất cả</button>
-                <button>Hành động</button>
-                <button>Viễn tưởng</button>
-                <button>Tâm lý</button>
-                <button>Nhạc kịch</button>
-            </div>
-            <!-- Nút gọi form thêm phim -->
-            <button id="openFormBtn" class="add-btn">+ Thêm Phim Mới</button>
+            <input type="text" class="search-bar" placeholder="Tìm kiếm trong tủ...">
+            <button id="openFormBtn" class="add-btn">+ Thêm Phim Từ TMDB</button>
         </div>
 
-        <!-- Khung chứa phim bây giờ đang trống, JavaScript sẽ tự động vẽ phim vào đây -->
         <div class="movie-grid" id="movieGrid"></div>
     </div>
 
@@ -157,67 +149,61 @@
         </div>
     </div>
 
-    <!-- Cửa sổ Form thêm phim mới -->
+    <!-- Cửa sổ tìm kiếm TMDB để thêm phim -->
     <div id="addMovieModal" class="modal">
         <div class="modal-content form-content">
             <span class="close-btn" id="closeFormBtn">&times;</span>
-            <h2>Thêm Phim Vào Tủ</h2>
-            <form id="movieForm">
-                <input type="text" id="inTitle" placeholder="Tên phim (VD: Avatar)" required>
-                <input type="url" id="inImg" placeholder="Link ảnh Poster (URL)" required>
-                <input type="number" id="inYear" placeholder="Năm phát hành (VD: 2009)" required>
-                <input type="number" step="0.1" id="inRating" placeholder="Điểm số IMDb (VD: 7.8)" required>
-                <select id="inGenre">
-                    <option value="Hành động">Hành động</option>
-                    <option value="Viễn tưởng">Viễn tưởng</option>
-                    <option value="Tâm lý">Tâm lý</option>
-                    <option value="Nhạc kịch">Nhạc kịch</option>
-                    <option value="Khác">Khác</option>
-                </select>
-                <textarea id="inDesc" placeholder="Tóm tắt nội dung phim..." rows="4" required></textarea>
-                <button type="submit" class="submit-btn">Lưu Phim Mới</button>
-            </form>
+            <h2>Tìm Phim Từ TMDB</h2>
+            <div class="search-tmdb-box">
+                <input type="text" id="tmdbSearchInput" placeholder="Nhập tên phim (VD: Avengers)...">
+                <button id="tmdbSearchBtn">Tìm</button>
+            </div>
+            <div id="tmdbResults">
+                <p style="color: #94a3b8; text-align: center; font-size: 0.9em;">Gõ tên phim và bấm Tìm để chọn phim chính thống.</p>
+            </div>
         </div>
     </div>
 
     <script>
-        // 1. Dữ liệu mặc định (6 bộ phim ban đầu)
+        // API Key của bạn đã được gắn tự động
+        const TMDB_API_KEY = "474d7f0a0f0765ce60c19a33e23e1fe8"; 
+
         const defaultMovies = [
-            { title: "Interstellar", year: "2014", rating: "8.6", genre: "Viễn tưởng", img: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg", desc: "Một nhóm nhà thám hiểm vũ trụ đi qua một hố đen..." },
-            { title: "The Dark Knight", year: "2008", rating: "9.0", genre: "Hành động", img: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg", desc: "Batman đối mặt với thử thách lớn nhất từ Joker." },
-            { title: "Inception", year: "2010", rating: "8.8", genre: "Viễn tưởng", img: "https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg", desc: "Kẻ cắp giấc mơ thực hiện một nhiệm vụ bất khả thi." },
-            { title: "La La Land", year: "2016", rating: "8.0", genre: "Nhạc kịch", img: "https://image.tmdb.org/t/p/w500/uDO8zWDhfWwoFdKS4fzkUJt0Vy0.jpg", desc: "Tình yêu mộng mơ giữa nhạc công jazz và nữ diễn viên." },
-            { title: "Mad Max: Fury Road", year: "2015", rating: "8.1", genre: "Hành động", img: "https://image.tmdb.org/t/p/w500/8tZYtuWezp8JbcsvHYO0O46tFbo.jpg", desc: "Cuộc chạy trốn điên cuồng trên sa mạc hậu tận thế." },
-            { title: "Titanic", year: "1997", rating: "7.9", genre: "Tâm lý", img: "https://image.tmdb.org/t/p/w500/9xjZS2rlVxm8SFx8kPC3aIGCOYQ.jpg", desc: "Chuyến ra khơi đầu tiên và cuối cùng của con tàu huyền thoại." }
+            { id: 157335, title: "Interstellar", year: "2014", rating: "8.6", img: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg", desc: "Một nhóm nhà thám hiểm vũ trụ đi qua một hố đen..." },
+            { id: 155, title: "The Dark Knight", year: "2008", rating: "9.0", img: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg", desc: "Batman đối mặt với thử thách lớn nhất từ Joker." }
         ];
 
-        // 2. Kiểm tra xem trong bộ nhớ máy tính đã có phim chưa, nếu chưa thì lấy phim mặc định
-        let myMovies = JSON.parse(localStorage.getItem('myMovieLibrary'));
+        let myMovies = JSON.parse(localStorage.getItem('myTmdbLibraryBlue'));
         if (!myMovies) {
             myMovies = defaultMovies;
-            localStorage.setItem('myMovieLibrary', JSON.stringify(myMovies));
+            localStorage.setItem('myTmdbLibraryBlue', JSON.stringify(myMovies));
         }
 
-        // 3. Hàm vẽ phim ra màn hình
         const movieGrid = document.getElementById('movieGrid');
-        
+
         function renderMovies() {
-            movieGrid.innerHTML = ''; // Xóa sạch khung chứa
-            
-            // Duyệt qua từng phim trong bộ nhớ và vẽ ra HTML
-            myMovies.forEach((movie) => {
+            movieGrid.innerHTML = '';
+            myMovies.forEach((movie, index) => {
                 const card = document.createElement('div');
                 card.className = 'movie-card';
                 card.innerHTML = `
+                    <button class="delete-btn" title="Xóa phim">&times;</button>
                     <img src="${movie.img}" class="movie-poster" alt="${movie.title}">
                     <div class="movie-info">
                         <h3 class="movie-title">${movie.title}</h3>
                         <div class="movie-meta"><span>${movie.year}</span><span class="movie-rating">★ ${movie.rating}</span></div>
-                        <div class="movie-genres"><span class="genre-tag">${movie.genre}</span></div>
                     </div>
                 `;
                 
-                // Khi bấm vào phim sẽ hiện Cửa sổ chi tiết
+                card.querySelector('.delete-btn').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if(confirm(`Bạn có muốn xóa phim "${movie.title}" không?`)) {
+                        myMovies.splice(index, 1);
+                        localStorage.setItem('myTmdbLibraryBlue', JSON.stringify(myMovies));
+                        renderMovies();
+                    }
+                });
+
                 card.addEventListener('click', () => {
                     document.getElementById('modalTitle').textContent = movie.title;
                     document.getElementById('modalImg').src = movie.img;
@@ -230,78 +216,78 @@
             });
         }
         
-        renderMovies(); // Gọi hàm vẽ phim ngay khi tải trang
+        renderMovies();
 
-        // 4. Xử lý Form Thêm Phim
         const addMovieModal = document.getElementById('addMovieModal');
-        const openFormBtn = document.getElementById('openFormBtn');
-        const closeFormBtn = document.getElementById('closeFormBtn');
-        const movieForm = document.getElementById('movieForm');
+        document.getElementById('openFormBtn').onclick = () => addMovieModal.style.display = 'flex';
+        document.getElementById('closeFormBtn').onclick = () => addMovieModal.style.display = 'none';
+        document.getElementById('closeDetailBtn').onclick = () => document.getElementById('movieModal').style.display = 'none';
 
-        // Bật/tắt form
-        openFormBtn.onclick = () => addMovieModal.style.display = 'flex';
-        closeFormBtn.onclick = () => addMovieModal.style.display = 'none';
+        const tmdbSearchBtn = document.getElementById('tmdbSearchBtn');
+        const tmdbSearchInput = document.getElementById('tmdbSearchInput');
+        const tmdbResults = document.getElementById('tmdbResults');
 
-        // Khi bấm "Lưu Phim Mới"
-        movieForm.addEventListener('submit', (e) => {
-            e.preventDefault(); // Ngăn trang web tải lại
-            
-            // Lấy dữ liệu người dùng nhập
-            const newMovie = {
-                title: document.getElementById('inTitle').value,
-                img: document.getElementById('inImg').value,
-                year: document.getElementById('inYear').value,
-                rating: document.getElementById('inRating').value,
-                genre: document.getElementById('inGenre').value,
-                desc: document.getElementById('inDesc').value
-            };
+        tmdbSearchBtn.onclick = async () => {
+            const query = tmdbSearchInput.value.trim();
+            if (!query) return;
 
-            // Thêm vào danh sách hiện tại
-            myMovies.unshift(newMovie); // Đưa phim mới lên đầu danh sách
-            
-            // Lưu lại vào bộ nhớ trình duyệt (Local Storage)
-            localStorage.setItem('myMovieLibrary', JSON.stringify(myMovies));
-            
-            // Cập nhật lại giao diện, xóa trắng form và đóng form
-            renderMovies();
-            movieForm.reset();
-            addMovieModal.style.display = 'none';
-            alert("Đã lưu phim thành công!");
-        });
+            tmdbResults.innerHTML = '<p style="color: #94a3b8; text-align: center;">Đang tìm kiếm...</p>';
 
-        // Tắt cửa sổ chi tiết
-        document.getElementById('closeDetailBtn').onclick = () => {
-            document.getElementById('movieModal').style.display = 'none';
-        }
+            try {
+                const response = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&language=vi-VN&query=${encodeURIComponent(query)}`);
+                const data = await response.json();
 
-        // Tắt Modal khi bấm ra ngoài vùng xám
-        window.onclick = (e) => {
-            if (e.target === document.getElementById('movieModal')) document.getElementById('movieModal').style.display = 'none';
-            if (e.target === addMovieModal) addMovieModal.style.display = 'none';
+                if (data.results && data.results.length > 0) {
+                    tmdbResults.innerHTML = '';
+                    data.results.forEach(movie => {
+                        const posterUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/40x60?text=No+Image';
+                        const year = movie.release_date ? movie.release_date.split('-')[0] : 'N/A';
+                        
+                        const item = document.createElement('div');
+                        item.className = 'tmdb-item';
+                        item.innerHTML = `
+                            <img src="${posterUrl}" alt="${movie.title}">
+                            <div>
+                                <h4 style="margin:0; color:white;">${movie.title} (${year})</h4>
+                                <p style="margin:5px 0 0; font-size:0.8em; color:#94a3b8; display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; overflow:hidden;">${movie.overview || 'Không có mô tả.'}</p>
+                            </div>
+                        `;
+
+                        item.onclick = () => {
+                            const newEntry = {
+                                id: movie.id,
+                                title: movie.title,
+                                year: year,
+                                rating: movie.vote_average ? movie.vote_average.toFixed(1) : '0.0',
+                                img: posterUrl,
+                                desc: movie.overview || 'Không có mô tả nội dung cho phim này.'
+                            };
+
+                            myMovies.unshift(newEntry);
+                            localStorage.setItem('myTmdbLibraryBlue', JSON.stringify(myMovies));
+                            renderMovies();
+                            
+                            addMovieModal.style.display = 'none';
+                            tmdbSearchInput.value = '';
+                            tmdbResults.innerHTML = '<p style="color: #94a3b8; text-align: center; font-size: 0.9em;">Gõ tên phim và bấm Tìm để chọn phim chính thống.</p>';
+                            alert(`Đã thêm phim "${movie.title}" thành công!`);
+                        };
+
+                        tmdbResults.appendChild(item);
+                    });
+                } else {
+                    tmdbResults.innerHTML = '<p style="color: #ef4444; text-align: center;">Không tìm thấy bộ phim nào phù hợp!</p>';
+                }
+            } catch (error) {
+                tmdbResults.innerHTML = '<p style="color: #ef4444; text-align: center;">Lỗi kết nối tới máy chủ TMDB!</p>';
+            }
         };
 
-        // 5. Tính năng Tìm kiếm và Lọc (Cập nhật để hoạt động với dữ liệu mới)
         document.querySelector('.search-bar').addEventListener('input', (e) => {
             const searchTerm = e.target.value.toLowerCase().trim();
-            const allCards = document.querySelectorAll('.movie-card');
-            allCards.forEach(card => {
+            document.querySelectorAll('.movie-card').forEach(card => {
                 const title = card.querySelector('.movie-title').textContent.toLowerCase();
                 card.style.display = title.includes(searchTerm) ? 'block' : 'none';
-            });
-        });
-
-        const filterButtons = document.querySelectorAll('.filter-buttons button');
-        filterButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                filterButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-                const selectedCategory = button.textContent.trim();
-                
-                const allCards = document.querySelectorAll('.movie-card');
-                allCards.forEach(card => {
-                    const genre = card.querySelector('.genre-tag').textContent.trim();
-                    card.style.display = (selectedCategory === 'Tất cả' || genre === selectedCategory) ? 'block' : 'none';
-                });
             });
         });
     </script>
