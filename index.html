@@ -8,7 +8,7 @@
         :root {
             --bg-color: #141414;
             --text-color: #ffffff;
-            --accent-color: #e50914; /* Red */
+            --accent-color: #e50914;
             --card-bg: #2f2f2f;
         }
 
@@ -31,172 +31,82 @@
             z-index: 100;
         }
 
-        header h1 {
-            margin: 0;
-            font-size: 2.5em;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
+        header h1 { margin: 0; font-size: 2.5em; text-transform: uppercase; }
+        header p { margin: 5px 0 0; color: #aaa; font-size: 1.1em; }
 
-        header p {
-            margin: 5px 0 0;
-            color: #aaa;
-            font-size: 1.1em;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        .movie-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 30px;
-        }
-
-        .movie-card {
-            background-color: var(--card-bg);
-            border-radius: 8px;
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-            cursor: pointer;
-        }
-
-        .movie-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.6);
-            border: 1px solid var(--accent-color);
-        }
-
-        .movie-poster {
-            width: 100%;
-            height: 300px;
-            background-color: #444;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3em;
-            color: #666;
-            background-image: linear-gradient(45deg, #222, #444);
-            position: relative;
-        }
-
-        .poster-1 { background: linear-gradient(135deg, #1f4037, #99f2c8); }
-        .poster-2 { background: linear-gradient(135deg, #232526, #414345); }
-        .poster-3 { background: linear-gradient(135deg, #8E2DE2, #4A00E0); }
-        .poster-4 { background: linear-gradient(135deg, #FF416C, #FF4B2B); }
-        .poster-5 { background: linear-gradient(135deg, #f12711, #f5af19); }
-        .poster-6 { background: linear-gradient(135deg, #00B4DB, #0083B0); }
-
-        .movie-info {
-            padding: 15px;
-        }
-
-        .movie-title {
-            margin: 0 0 10px;
-            font-size: 1.2em;
-            font-weight: bold;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .movie-meta {
-            display: flex;
-            justify-content: space-between;
-            color: #aaa;
-            font-size: 0.9em;
-            margin-bottom: 10px;
-        }
-
-        .movie-rating {
-            color: #f5c518;
-            font-weight: bold;
-        }
-
-        .movie-genres {
-            font-size: 0.8em;
-            color: #bbb;
-            display: flex;
-            gap: 5px;
-            flex-wrap: wrap;
-        }
-
-        .genre-tag {
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 3px 8px;
-            border-radius: 4px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px;
-            color: #666;
-            margin-top: 50px;
-            border-top: 1px solid #333;
-        }
+        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
 
         .controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            background-color: var(--card-bg);
-            padding: 15px 20px;
-            border-radius: 8px;
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 30px; background-color: var(--card-bg);
+            padding: 15px 20px; border-radius: 8px;
         }
         
         .search-bar {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            background-color: #444;
-            color: white;
-            width: 300px;
-            font-size: 1em;
+            padding: 10px 15px; border: none; border-radius: 4px;
+            background-color: #444; color: white; width: 300px; font-size: 1em;
         }
         
-        .search-bar:focus {
-            outline: 1px solid var(--accent-color);
-        }
-
         .filter-buttons button {
-            background: none;
-            border: 1px solid #666;
-            color: white;
-            padding: 8px 15px;
-            margin-left: 10px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.2s;
+            background: none; border: 1px solid #666; color: white;
+            padding: 8px 15px; margin-left: 10px; border-radius: 20px;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .filter-buttons button:hover, .filter-buttons button.active {
+            background-color: var(--accent-color); border-color: var(--accent-color);
         }
 
-        .filter-buttons button:hover, .filter-buttons button.active {
-            background-color: var(--accent-color);
-            border-color: var(--accent-color);
+        .movie-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 30px;
         }
+
+        .movie-card {
+            background-color: var(--card-bg); border-radius: 8px; overflow: hidden;
+            transition: transform 0.3s ease; box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            cursor: pointer;
+        }
+        .movie-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border: 1px solid var(--accent-color);
+        }
+
+        /* Đổi từ màu gradient sang hiển thị ảnh thật */
+        .movie-poster {
+            width: 100%; height: 300px; object-fit: cover; display: block;
+        }
+
+        .movie-info { padding: 15px; }
+        .movie-title { margin: 0 0 10px; font-size: 1.2em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .movie-meta { display: flex; justify-content: space-between; color: #aaa; font-size: 0.9em; margin-bottom: 10px; }
+        .movie-rating { color: #f5c518; font-weight: bold; }
+        .movie-genres { font-size: 0.8em; color: #bbb; display: flex; gap: 5px; flex-wrap: wrap; }
+        .genre-tag { background-color: rgba(255, 255, 255, 0.1); padding: 3px 8px; border-radius: 4px; }
+
+        /* Giao diện Cửa sổ xem chi tiết (Modal) */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center;
+        }
+        .modal-content {
+            background-color: var(--card-bg); width: 90%; max-width: 800px;
+            border-radius: 10px; display: flex; overflow: hidden; position: relative;
+        }
+        .close-btn {
+            position: absolute; top: 15px; right: 20px; font-size: 30px;
+            color: #aaa; cursor: pointer; z-index: 10;
+        }
+        .close-btn:hover { color: white; }
+        .modal-poster { width: 40%; object-fit: cover; }
+        .modal-details { padding: 30px; width: 60%; }
+        .modal-details h2 { margin-top: 0; color: var(--accent-color); font-size: 2em; }
+        .modal-desc { margin-top: 20px; line-height: 1.8; color: #ddd; }
 
         @media (max-width: 768px) {
-            .controls {
-                flex-direction: column;
-                gap: 15px;
-            }
-            .search-bar {
-                width: 100%;
-                box-sizing: border-box;
-            }
-            .filter-buttons {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 10px;
-                justify-content: center;
-            }
-            .filter-buttons button {
-                margin-left: 0;
-            }
+            .controls { flex-direction: column; gap: 15px; }
+            .search-bar { width: 100%; }
+            .modal-content { flex-direction: column; max-height: 90vh; overflow-y: auto; }
+            .modal-poster { width: 100%; height: 300px; }
+            .modal-details { width: 100%; box-sizing: border-box; }
         }
     </style>
 </head>
@@ -220,142 +130,131 @@
         </div>
 
         <div class="movie-grid">
-            <!-- Phim 1 -->
-            <div class="movie-card">
-                <div class="movie-poster poster-1">🌌</div>
+            <!-- Thẻ phim đã được nâng cấp thêm link ảnh thật và data-desc (nội dung tóm tắt) -->
+            <div class="movie-card" data-desc="Một nhóm nhà thám hiểm vũ trụ đi qua một hố đen để tìm kiếm hành tinh mới cho nhân loại khi Trái Đất đang dần cạn kiệt sự sống.">
+                <img src="https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg" class="movie-poster" alt="Interstellar">
                 <div class="movie-info">
                     <h3 class="movie-title">Interstellar</h3>
-                    <div class="movie-meta">
-                        <span>2014</span>
-                        <span class="movie-rating">★ 8.6</span>
-                    </div>
-                    <div class="movie-genres">
-                        <span class="genre-tag">Viễn tưởng</span>
-                    </div>
+                    <div class="movie-meta"><span>2014</span><span class="movie-rating">★ 8.6</span></div>
+                    <div class="movie-genres"><span class="genre-tag">Viễn tưởng</span></div>
                 </div>
             </div>
 
-            <!-- Phim 2 -->
-            <div class="movie-card">
-                <div class="movie-poster poster-2">🦇</div>
+            <div class="movie-card" data-desc="Batman phải đối mặt với thử thách lớn nhất về mặt tâm lý và thể chất khi chiến đấu chống lại tên tội phạm điên loạn mang tên Joker.">
+                <img src="https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg" class="movie-poster" alt="The Dark Knight">
                 <div class="movie-info">
                     <h3 class="movie-title">The Dark Knight</h3>
-                    <div class="movie-meta">
-                        <span>2008</span>
-                        <span class="movie-rating">★ 9.0</span>
-                    </div>
-                    <div class="movie-genres">
-                        <span class="genre-tag">Hành động</span>
-                    </div>
+                    <div class="movie-meta"><span>2008</span><span class="movie-rating">★ 9.0</span></div>
+                    <div class="movie-genres"><span class="genre-tag">Hành động</span></div>
                 </div>
             </div>
 
-            <!-- Phim 3 -->
-            <div class="movie-card">
-                <div class="movie-poster poster-3">🧠</div>
+            <div class="movie-card" data-desc="Một kẻ cắp chuyên nghiệp có khả năng xâm nhập vào giấc mơ của người khác được giao nhiệm vụ cấy ghép một ý tưởng vào tâm trí của một CEO.">
+                <img src="https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg" class="movie-poster" alt="Inception">
                 <div class="movie-info">
                     <h3 class="movie-title">Inception</h3>
-                    <div class="movie-meta">
-                        <span>2010</span>
-                        <span class="movie-rating">★ 8.8</span>
-                    </div>
-                    <div class="movie-genres">
-                        <span class="genre-tag">Hành động</span>
-                        <span class="genre-tag">Viễn tưởng</span>
-                    </div>
+                    <div class="movie-meta"><span>2010</span><span class="movie-rating">★ 8.8</span></div>
+                    <div class="movie-genres"><span class="genre-tag">Hành động</span><span class="genre-tag">Viễn tưởng</span></div>
                 </div>
             </div>
 
-            <!-- Phim 4 -->
-            <div class="movie-card">
-                <div class="movie-poster poster-4">💖</div>
+            <div class="movie-card" data-desc="Câu chuyện tình yêu đầy mộng mơ và trắc trở giữa một nhạc công jazz và một nữ diễn viên đầy tham vọng tại Los Angeles.">
+                <img src="https://image.tmdb.org/t/p/w500/uDO8zWDhfWwoFdKS4fzkUJt0Vy0.jpg" class="movie-poster" alt="La La Land">
                 <div class="movie-info">
                     <h3 class="movie-title">La La Land</h3>
-                    <div class="movie-meta">
-                        <span>2016</span>
-                        <span class="movie-rating">★ 8.0</span>
-                    </div>
-                    <div class="movie-genres">
-                        <span class="genre-tag">Nhạc kịch</span>
-                    </div>
+                    <div class="movie-meta"><span>2016</span><span class="movie-rating">★ 8.0</span></div>
+                    <div class="movie-genres"><span class="genre-tag">Nhạc kịch</span></div>
                 </div>
             </div>
             
-            <!-- Phim 5 -->
-            <div class="movie-card">
-                <div class="movie-poster poster-5">🔥</div>
+            <div class="movie-card" data-desc="Trong một thế giới hậu tận thế cằn cỗi, Max điên cuồng hợp tác cùng Furiosa để chạy trốn khỏi một bạo chúa và đội quân cuồng tín của hắn.">
+                <img src="https://image.tmdb.org/t/p/w500/8tZYtuWezp8JbcsvHYO0O46tFbo.jpg" class="movie-poster" alt="Mad Max">
                 <div class="movie-info">
                     <h3 class="movie-title">Mad Max: Fury Road</h3>
-                    <div class="movie-meta">
-                        <span>2015</span>
-                        <span class="movie-rating">★ 8.1</span>
-                    </div>
-                    <div class="movie-genres">
-                        <span class="genre-tag">Hành động</span>
-                    </div>
+                    <div class="movie-meta"><span>2015</span><span class="movie-rating">★ 8.1</span></div>
+                    <div class="movie-genres"><span class="genre-tag">Hành động</span></div>
                 </div>
             </div>
 
-            <!-- Phim 6 -->
-            <div class="movie-card">
-                <div class="movie-poster poster-6">🧊</div>
+            <div class="movie-card" data-desc="Chuyến ra khơi đầu tiên và cũng là cuối cùng của con tàu Titanic huyền thoại, làm nền cho mối tình bi tráng giữa Jack và Rose.">
+                <img src="https://image.tmdb.org/t/p/w500/9xjZS2rlVxm8SFx8kPC3aIGCOYQ.jpg" class="movie-poster" alt="Titanic">
                 <div class="movie-info">
                     <h3 class="movie-title">Titanic</h3>
-                    <div class="movie-meta">
-                        <span>1997</span>
-                        <span class="movie-rating">★ 7.9</span>
-                    </div>
-                    <div class="movie-genres">
-                        <span class="genre-tag">Tâm lý</span>
-                    </div>
+                    <div class="movie-meta"><span>1997</span><span class="movie-rating">★ 7.9</span></div>
+                    <div class="movie-genres"><span class="genre-tag">Tâm lý</span></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <footer>
-        <p>&copy; Tủ Phim Của Tôi. Được tạo với ❤️ để lưu trữ đam mê.</p>
-    </footer>
+    <!-- Khung Cửa sổ chi tiết (Modal) ẩn -->
+    <div id="movieModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <img id="modalImg" class="modal-poster" src="" alt="Poster">
+            <div class="modal-details">
+                <h2 id="modalTitle">Tên Phim</h2>
+                <div id="modalMeta" class="movie-meta" style="justify-content: flex-start; gap: 20px;"></div>
+                <p id="modalDesc" class="modal-desc">Nội dung chi tiết...</p>
+            </div>
+        </div>
+    </div>
 
-    <!-- Đoạn JavaScript giúp Tìm kiếm & Lọc thể loại hoạt động -->
     <script>
+        // Chức năng Tìm kiếm & Lọc (giữ nguyên)
         const searchInput = document.querySelector('.search-bar');
         const filterButtons = document.querySelectorAll('.filter-buttons button');
         const movieCards = document.querySelectorAll('.movie-card');
 
-        // Chức năng 1: Tìm kiếm theo tên phim khi gõ phím
         searchInput.addEventListener('input', (e) => {
             const searchTerm = e.target.value.toLowerCase().trim();
-            
             movieCards.forEach(card => {
                 const title = card.querySelector('.movie-title').textContent.toLowerCase();
-                if (title.includes(searchTerm)) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
+                card.style.display = title.includes(searchTerm) ? 'block' : 'none';
             });
         });
 
-        // Chức năng 2: Lọc danh sách khi bấm vào các nút thể loại
         filterButtons.forEach(button => {
             button.addEventListener('click', () => {
                 filterButtons.forEach(btn => btn.classList.remove('active'));
                 button.classList.add('active');
-
                 const selectedCategory = button.textContent.trim();
-
+                
                 movieCards.forEach(card => {
                     const genres = Array.from(card.querySelectorAll('.genre-tag')).map(tag => tag.textContent.trim());
-                    
-                    if (selectedCategory === 'Tất cả' || genres.includes(selectedCategory)) {
-                        card.style.display = 'block';
-                    } else {
-                        card.style.display = 'none';
-                    }
+                    card.style.display = (selectedCategory === 'Tất cả' || genres.includes(selectedCategory)) ? 'block' : 'none';
                 });
             });
         });
+
+        // Chức năng mới: Cửa sổ chi tiết (Modal)
+        const modal = document.getElementById('movieModal');
+        const closeBtn = document.querySelector('.close-btn');
+
+        movieCards.forEach(card => {
+            card.addEventListener('click', () => {
+                // Lấy dữ liệu từ thẻ phim được click
+                const title = card.querySelector('.movie-title').textContent;
+                const imgSrc = card.querySelector('.movie-poster').src;
+                const meta = card.querySelector('.movie-meta').innerHTML;
+                const desc = card.getAttribute('data-desc'); // Lấy nội dung tóm tắt
+
+                // Đổ dữ liệu vào Modal
+                document.getElementById('modalTitle').textContent = title;
+                document.getElementById('modalImg').src = imgSrc;
+                document.getElementById('modalMeta').innerHTML = meta;
+                document.getElementById('modalDesc').textContent = desc;
+
+                // Hiển thị Modal
+                modal.style.display = 'flex';
+            });
+        });
+
+        // Tắt Modal khi bấm nút X hoặc bấm ra ngoài
+        closeBtn.onclick = () => modal.style.display = 'none';
+        window.onclick = (e) => {
+            if (e.target === modal) modal.style.display = 'none';
+        };
     </script>
 </body>
 </html>
