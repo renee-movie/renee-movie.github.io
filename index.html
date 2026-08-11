@@ -12,6 +12,8 @@
             --accent-hover: #2563eb;   
             --card-bg: #1e293b;        
             --border-color: #334155;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
         }
 
         body {
@@ -43,6 +45,10 @@
             display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; width: 100%;
         }
 
+        .action-buttons {
+            display: flex; gap: 10px; flex-wrap: wrap;
+        }
+
         .filter-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
         .filter-btn {
             background-color: transparent; border: 1px solid var(--border-color);
@@ -57,11 +63,16 @@
         }
         .search-bar:focus { outline: 1px solid var(--accent-color); }
         
-        .add-btn {
-            background-color: var(--accent-color); color: white; border: none; padding: 10px 20px; 
+        .btn {
+            color: white; border: none; padding: 10px 15px; 
             border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.3s;
+            display: flex; align-items: center; gap: 5px;
         }
-        .add-btn:hover { background-color: var(--accent-hover); transform: scale(1.05); }
+        .btn:hover { transform: scale(1.05); filter: brightness(1.1); }
+        
+        .btn-add { background-color: var(--accent-color); }
+        .btn-export { background-color: var(--success-color); }
+        .btn-import { background-color: var(--warning-color); color: #000; }
 
         .movie-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 30px; }
         .movie-card {
@@ -106,12 +117,10 @@
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
         }
 
-        /* Tùy chỉnh riêng cho Modal Chi tiết Phim (Kiểu Điện Ảnh) */
+        /* Tùy chỉnh riêng cho Modal Chi tiết Phim */
         .detail-content {
-            background-color: #0b0f19;
-            background-size: cover;
-            background-position: center top;
-            background-repeat: no-repeat;
+            background-color: #0b0f19; background-size: cover;
+            background-position: center top; background-repeat: no-repeat;
             transition: background-image 0.5s ease-in-out;
         }
         
@@ -126,9 +135,7 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.5); z-index: 2; border: 1px solid rgba(255,255,255,0.1);
         }
         
-        .modal-details { 
-            padding-left: 40px; flex: 1; display: flex; flex-direction: column; z-index: 2; 
-        }
+        .modal-details { padding-left: 40px; flex: 1; display: flex; flex-direction: column; z-index: 2; }
         .modal-details h2 { margin-top: 0; color: white; font-size: 2.5em; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); line-height: 1.2; }
         .modal-desc { margin-top: 15px; line-height: 1.8; color: #cbd5e1; font-size: 1.05em; margin-bottom: 20px; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); }
 
@@ -153,7 +160,7 @@
         .trailer-btn:disabled { background-color: #555; cursor: not-allowed; transform: none; box-shadow: none; }
         .trailer-container { margin-top: 20px; width: 100%; border-radius: 8px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
 
-        /* Style cho Modal Tìm Kiếm (Giữ nguyên gọn gàng) */
+        /* Modal Tìm Kiếm */
         .form-content { flex-direction: column; padding: 30px; max-width: 500px; background-color: var(--card-bg); }
         .form-content h2 { margin-top: 0; color: white; text-align: center; }
         .search-tmdb-box { display: flex; gap: 10px; margin-bottom: 15px; }
@@ -171,6 +178,8 @@
             .modal-details { padding-left: 0; padding-top: 20px; width: 100%; box-sizing: border-box; }
             .controls-top { flex-direction: column; align-items: stretch; }
             .search-bar { width: 100%; box-sizing: border-box; }
+            .action-buttons { width: 100%; justify-content: space-between; }
+            .btn { flex: 1; justify-content: center; }
         }
     </style>
 </head>
@@ -185,7 +194,14 @@
         <div class="controls">
             <div class="controls-top">
                 <input type="text" class="search-bar" placeholder="Tìm kiếm trong tủ...">
-                <button id="openFormBtn" class="add-btn">+ Thêm Phim Từ TMDB</button>
+                <div class="action-buttons">
+                    <button id="exportBtn" class="btn btn-export" title="Tải file dữ liệu về máy">⬇️ Sao lưu</button>
+                    <!-- Input ẩn để chọn file -->
+                    <input type="file" id="importFile" accept=".json" style="display: none;">
+                    <button id="importBtn" class="btn btn-import" title="Khôi phục từ file có sẵn">⬆️ Phục hồi</button>
+                    
+                    <button id="openFormBtn" class="btn btn-add">+ Thêm Phim Mới</button>
+                </div>
             </div>
             <div class="filter-buttons">
                 <button class="filter-btn active" data-filter="all">Tất cả</button>
@@ -197,7 +213,7 @@
         <div class="movie-grid" id="movieGrid"></div>
     </div>
 
-    <!-- Cửa sổ xem chi tiết phim (Giao diện điện ảnh) -->
+    <!-- Modal Chi tiết Phim -->
     <div id="movieModal" class="modal">
         <div class="modal-content detail-content" id="detailModalContent">
             <span class="close-btn" id="closeDetailBtn">&times;</span>
@@ -224,7 +240,7 @@
         </div>
     </div>
 
-    <!-- Cửa sổ tìm kiếm TMDB -->
+    <!-- Modal Tìm kiếm TMDB -->
     <div id="addMovieModal" class="modal">
         <div class="modal-content form-content">
             <span class="close-btn" id="closeFormBtn" style="color: #94a3b8;">&times;</span>
@@ -300,12 +316,10 @@
                     document.getElementById('modalDesc').textContent = movie.desc;
                     document.getElementById('modalStatus').value = movie.status; 
                     
-                    // Xử lý ảnh nền Backdrop
-                    detailModalContent.style.backgroundImage = 'none'; // Xóa ảnh nền cũ tránh bị chớp
+                    detailModalContent.style.backgroundImage = 'none';
                     if (movie.backdrop) {
                         detailModalContent.style.backgroundImage = `url('${movie.backdrop}')`;
                     } else {
-                        // Nếu phim cũ chưa có ảnh nền, gọi API để lấy và lưu lại tự động
                         try {
                             const res = await fetch(`https://api.themoviedb.org/3/movie/${movie.id}?api_key=${TMDB_API_KEY}&language=vi-VN`);
                             const data = await res.json();
@@ -314,9 +328,7 @@
                                 localStorage.setItem('myTmdbLibraryBlue', JSON.stringify(myMovies));
                                 detailModalContent.style.backgroundImage = `url('${movie.backdrop}')`;
                             }
-                        } catch(e) {
-                            console.log("Không tải được backdrop cho phim cũ.");
-                        }
+                        } catch(e) { console.log("Không tải được backdrop"); }
                     }
 
                     const trailerBtn = document.getElementById('playTrailerBtn');
@@ -352,15 +364,14 @@
                             trailerBtn.disabled = true;
                         }
                     };
-
                     document.getElementById('movieModal').style.display = 'flex';
                 });
-
                 movieGrid.appendChild(card);
             });
             applyFilters(); 
         }
 
+        // ================= XỬ LÝ LỌC & ĐỔI TRẠNG THÁI =================
         document.getElementById('modalStatus').addEventListener('change', (e) => {
             if(currentOpenMovieIndex !== null) {
                 myMovies[currentOpenMovieIndex].status = e.target.value;
@@ -376,7 +387,6 @@
             document.querySelectorAll('.movie-card').forEach(card => {
                 const title = card.querySelector('.movie-title').textContent.toLowerCase();
                 const status = card.dataset.status;
-
                 if (title.includes(searchTerm) && (activeFilter === 'all' || status === activeFilter)) {
                     card.style.display = 'block';
                 } else {
@@ -394,6 +404,64 @@
             });
         });
 
+        // ================= XỬ LÝ TÍNH NĂNG SAO LƯU / PHỤC HỒI =================
+        
+        // 1. Sao Lưu (Xuất File)
+        document.getElementById('exportBtn').addEventListener('click', () => {
+            if(myMovies.length === 0) {
+                alert("Tủ phim đang trống, không có gì để sao lưu!");
+                return;
+            }
+            // Chuyển mảng phim thành dạng chuỗi JSON đẹp (xuống dòng)
+            const dataStr = JSON.stringify(myMovies, null, 2);
+            // Tạo một tệp ảo (Blob)
+            const blob = new Blob([dataStr], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            
+            // Tạo một thẻ link ẩn để tự động bấm tải về
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'tu_phim_backup/tu_phim_backup.json';
+            a.click();
+            
+            // Dọn dẹp bộ nhớ sau khi tải xong
+            URL.revokeObjectURL(url);
+        });
+
+        // 2. Phục Hồi (Nhập File)
+        const importFile = document.getElementById('importFile');
+        document.getElementById('importBtn').addEventListener('click', () => {
+            importFile.click(); // Mở cửa sổ chọn file của máy tính
+        });
+
+        importFile.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                try {
+                    const importedData = JSON.parse(event.target.result);
+                    
+                    // Kiểm tra sơ bộ xem file có đúng định dạng mảng không
+                    if (Array.isArray(importedData)) {
+                        myMovies = importedData; // Ghi đè tủ phim hiện tại
+                        localStorage.setItem('myTmdbLibraryBlue', JSON.stringify(myMovies));
+                        renderMovies();
+                        alert('🎉 Đã phục hồi dữ liệu tủ phim thành công!');
+                    } else {
+                        alert('⚠️ File dữ liệu không hợp lệ!');
+                    }
+                } catch (error) {
+                    alert('❌ Lỗi khi đọc file. Có thể file đã bị hỏng hoặc không đúng định dạng.');
+                }
+            };
+            
+            reader.readAsText(file);
+            importFile.value = ''; // Reset input để có thể chọn lại đúng file đó lần sau nếu cần
+        });
+
+        // ================= KHỞI TẠO & ĐÓNG/MỞ MODAL =================
         renderMovies();
 
         function stopTrailer() { document.getElementById('trailerContainer').innerHTML = ''; }
@@ -461,7 +529,7 @@
                                 year: year,
                                 rating: movie.vote_average ? movie.vote_average.toFixed(1) : '0.0',
                                 img: posterUrl,
-                                backdrop: backdropUrl, // Lưu kèm ảnh nền khổ lớn
+                                backdrop: backdropUrl, 
                                 desc: movie.overview || 'Không có mô tả nội dung cho phim này.',
                                 status: 'plan_to_watch'
                             };
